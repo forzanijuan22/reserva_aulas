@@ -12,9 +12,12 @@ export default function ResetPassword() {
     setMessage("");
     setError("");
 
+    // 🔥 CORRECCIÓN: Usar variable de entorno
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+
     try {
       const res = await fetch(
-        `http://localhost:4000/api/auth/reset-password/${token}`,
+        `${API_URL}/auth/reset-password/${token}`,
         {
           method: "POST",
           headers: {

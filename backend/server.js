@@ -10,7 +10,22 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
+// CORRECCIÓN: Configuración de CORS para aceptar peticiones de red local o localhost
+const origenesPermitidos = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || origenesPermitidos.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  }
+}));
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

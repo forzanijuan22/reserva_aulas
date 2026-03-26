@@ -11,7 +11,10 @@ export default function ForgotPassword() {
     setMessage("");
     setError("");
 
-    const res = await fetch("http://localhost:4000/api/auth/forgot-password", {
+    // 🔥 CORRECCIÓN: Usar variable de entorno
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+
+    const res = await fetch(`${API_URL}/auth/forgot-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

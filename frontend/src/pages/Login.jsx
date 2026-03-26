@@ -24,9 +24,11 @@ export default function Login() {
     setError("");
     setMessage("");
 
+    // 🔥 CORRECCIÓN: Usamos la variable de entorno en lugar de localhost fijo
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
     const url = isRegister
-      ? "http://localhost:4000/api/auth/register"
-      : "http://localhost:4000/api/auth/login";
+      ? `${API_URL}/auth/register`
+      : `${API_URL}/auth/login`;
 
     const res = await fetch(url, {
       method: "POST",
@@ -125,6 +127,7 @@ export default function Login() {
               <p>
                 ¿No tienes cuenta?{" "}
                 <button
+                  type="button"
                   onClick={() => setIsRegister(true)}
                   className="text-unrafGreen font-semibold hover:underline"
                 >
@@ -143,6 +146,7 @@ export default function Login() {
             <p>
               ¿Ya tienes cuenta?{" "}
               <button
+                type="button"
                 onClick={() => setIsRegister(false)}
                 className="text-unrafGreen font-semibold hover:underline"
               >

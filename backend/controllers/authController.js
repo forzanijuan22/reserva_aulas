@@ -119,7 +119,9 @@ export const forgotPassword = async (req, res) => {
       },
     });
 
-    const resetLink = `http://localhost:5173/reset-password/${token}`;
+    // CORRECCIÓN: Usar la variable de entorno para el dominio del frontend
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const resetLink = `${frontendUrl}/reset-password/${token}`;
 
     await transporter.sendMail({
       from: `"Reserva de Aulas UNRaf" <${process.env.EMAIL_USER}>`,
