@@ -3,18 +3,33 @@ import { useEffect, useState } from "react";
 export default function AulasList() {
   const [aulas, setAulas] = useState([]);
 
+  // 🔥 MAGIA: IP DINÁMICA
+  const API_URL = `http://${window.location.hostname}:4000/api`;
+
   useEffect(() => {
     const fetchAulas = async () => {
-      const token = localStorage.getItem("token");
+      try {
+        const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:4000/api/aulas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        // 🔄 Usamos la IP dinámica en vez de localhost
+        const res = await fetch(`${API_URL}/aulas`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      const data = await res.json();
-      setAulas(data);
+        const data = await res.json();
+        
+        // Evitamos errores si data no es un array
+        if (Array.isArray(data)) {
+          setAulas(data);
+        } else {
+          setAulas([]);
+        }
+      } catch (error) {
+        console.error("Error cargando aulas:", error);
+        setAulas([]);
+      }
     };
 
     fetchAulas();

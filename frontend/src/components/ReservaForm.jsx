@@ -12,13 +12,15 @@ export default function ReservaForm({ onReservaCreada }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // 🔄 CARGAR AULAS
+  // 🔥 MAGIA: IP DINÁMICA
+  const API_URL = `http://${window.location.hostname}:4000/api`;
+
   useEffect(() => {
     const fetchAulas = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:4000/api/aulas", {
+        const res = await fetch(`${API_URL}/aulas`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -26,7 +28,6 @@ export default function ReservaForm({ onReservaCreada }) {
 
         const data = await res.json();
 
-        // 🛑 EVITA ERROR .map
         if (Array.isArray(data)) {
           setAulas(data);
         } else {
@@ -47,7 +48,6 @@ export default function ReservaForm({ onReservaCreada }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🟢 CREAR RESERVA
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -56,7 +56,7 @@ export default function ReservaForm({ onReservaCreada }) {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:4000/api/reservas", {
+      const res = await fetch(`${API_URL}/reservas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,12 +72,11 @@ export default function ReservaForm({ onReservaCreada }) {
         return;
       }
 
+      // Mensaje sutil en pantalla, sin alert()
       setMessage("Reserva creada correctamente ✅");
 
-      // 🔄 refrescar
       onReservaCreada();
 
-      // 🔄 limpiar form
       setForm({
         aula_id: "",
         fecha: "",
@@ -94,7 +93,6 @@ export default function ReservaForm({ onReservaCreada }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
-      {/* SELECT AULA */}
       <select
         name="aula_id"
         value={form.aula_id}
@@ -112,7 +110,6 @@ export default function ReservaForm({ onReservaCreada }) {
           ))}
       </select>
 
-      {/* FECHA */}
       <input
         type="date"
         name="fecha"
@@ -122,7 +119,6 @@ export default function ReservaForm({ onReservaCreada }) {
         className="border rounded-lg p-3 bg-white dark:bg-[#1a1a1a] dark:border-gray-700 dark:text-white"
       />
 
-      {/* HORAS */}
       <div className="grid grid-cols-2 gap-3">
         <input
           type="time"
@@ -143,7 +139,6 @@ export default function ReservaForm({ onReservaCreada }) {
         />
       </div>
 
-      {/* BOTÓN */}
       <button
         type="submit"
         className="bg-unrafBlue text-white p-3 rounded-lg hover:bg-unrafGreen transition"
@@ -151,7 +146,6 @@ export default function ReservaForm({ onReservaCreada }) {
         Reservar
       </button>
 
-      {/* MENSAJES */}
       {message && (
         <p className="text-green-600 dark:text-green-400 text-sm">
           {message}

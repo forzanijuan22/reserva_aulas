@@ -11,6 +11,16 @@ export const register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
+    // 🔥 VALIDACIÓN: Solo correos de la UNRaf para cuentas nuevas
+    if (!email.endsWith("@unraf.edu.ar")) {
+      return res.status(400).json({ message: "Solo se permite el registro con correos institucionales (@unraf.edu.ar)" });
+    }
+
+    // 🔥 VALIDACIÓN: Al menos 8 caracteres
+    if (password.length < 8) {
+      return res.status(400).json({ message: "La contraseña debe tener al menos 8 caracteres" });
+    }
+
     const [exists] = await pool.query(
       "SELECT id FROM usuarios WHERE email = ?",
       [email]
@@ -119,8 +129,9 @@ export const forgotPassword = async (req, res) => {
       },
     });
 
-    // CORRECCIÓN: Usar la variable de entorno para el dominio del frontend
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    // 🔥 MAGIA: Capturamos la IP real desde donde el celular hizo la petición
+    // Si la petición no tiene un origen claro (muy raro), usamos una IP de respaldo genérica
+    const frontendUrl = req.headers.origin || "http://192.168.0.7:5173";
     const resetLink = `${frontendUrl}/reset-password/${token}`;
 
     await transporter.sendMail({
@@ -157,6 +168,11 @@ export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
     const { password } = req.body;
+
+    // 🔥 VALIDACIÓN: Al menos 8 caracteres para la nueva contraseña
+    if (password.length < 8) {
+      return res.status(400).json({ message: "La nueva contraseña debe tener al menos 8 caracteres" });
+    }
 
     const [rows] = await pool.query(
       `
