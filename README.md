@@ -69,10 +69,12 @@ EMAIL_PASS=tu_contraseña_de_aplicacion_google
 
 
 
+
 Levantar el servidor:
 
 npm run dev
 # o usando node: node index.js
+
 
 
 
