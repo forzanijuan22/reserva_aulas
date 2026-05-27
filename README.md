@@ -41,7 +41,6 @@ git clone [https://github.com/forzanijuan22/reserva_aulas.git](https://github.co
 cd reserva_aulas
 
 
-
 2. Configurar la Base de Datos
 
 Abre tu gestor de MySQL.
@@ -54,7 +53,6 @@ Ejecuta el script SQL proporcionado en el proyecto para generar las tablas usuar
 
 cd backend
 npm install
-
 
 
 Crear un archivo .env en la carpeta backend con las siguientes variables:
