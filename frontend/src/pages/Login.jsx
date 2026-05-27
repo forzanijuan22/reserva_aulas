@@ -68,7 +68,7 @@ export default function Login() {
           <img src="/unraf_logo-removebg-preview.png" alt="UNRaf Logo" className="h-24 mb-8 bg-white p-2 rounded-xl" />
           <h1 className="text-5xl font-bold mb-6 leading-tight">Gestión inteligente<br/>de aulas UNRaf</h1>
           <p className="text-lg text-blue-100 mb-8 max-w-md">
-            Un sistema moderno y centralizado para la reserva de espacios, laboratorios y auditorios.
+            Un sistema moderno y centralizado para la reserva de espacios y laboratorios.
           </p>
           
           <div className="space-y-4">
